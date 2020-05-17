@@ -1,12 +1,34 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+   <div id="app">
     <router-view/>
   </div>
 </template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+    ...mapGetters( {
+      isComponentModalActive: 'lihatModalStatus',
+      modalMsg: 'lihatModalMsg'
+    }),
+  },
+  watch: {
+    isComponentModalActive() {
+      if (this.isComponentModalActive) this.success()
+      this.$store.commit('updateModal', {status: false, msg: null})
+    }
+  },
+  methods: {
+    success() {
+        this.$buefy.notification.open({
+            message: this.modalMsg,
+            type: 'is-success'
+        })
+    },
+  },
+  
+}
+</script>
 
 <style>
 #app {
@@ -30,3 +52,4 @@
   color: #42b983;
 }
 </style>
+  
